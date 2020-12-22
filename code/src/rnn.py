@@ -293,13 +293,13 @@ class RNN():
 
         y = self.f(self.a_r * X_r + X_e - self.b)
         y_prev[:] = y
-        y_mean[:] = y[:]
-        y_var[:] = 0.5
+        y_mean[:] = 0.
+        y_var[:] = 0.25
         
         E_mean[:] = 0.
-        E_var[:] = 0.5
+        E_var[:] = 0.25
         
-        var_t[:] = 0.5
+        var_t[:] = 0.25
 
         delta_a = np.zeros((self.N))
         delta_b = np.zeros((self.N))
@@ -319,13 +319,13 @@ class RNN():
 
         for t in tqdm(range(1,T),disable=not(show_progress)):
 
-            X_r = self.W @ y
+            X_r = self.a_r * (self.W @ y)
             if mode == 'real_input':
                 X_e = self.w_in @ u_in[t,:]
             else:
                 X_e = np.random.normal(0.,sigm_e,(self.N))
 
-            y = self.f(self.a_r * X_r + X_e - self.b)
+            y = self.f( X_r + X_e - self.b )
 
             y_mean += self.eps_y_mean * ( -y_mean + y)
             y_var += self.eps_y_std * ( -y_var + (y-y_mean)**2.)
@@ -344,14 +344,14 @@ class RNN():
             
             else:
                 if adapt_mode == "local":
-                    delta_a = a * (self.R_target**2.*y_prev**2. - X_r**2.)
+                    delta_a = self.a_r * (self.R_target**2.*y_prev**2. - X_r**2.)
                 else:
-                    delta_a = a * (self.R_target**2.*(y_prev**2.).mean() - (X_r**2.).mean())
+                    delta_a = self.a_r * (self.R_target**2.*(y_prev**2.).mean() - (X_r**2.).mean())
 
                 if norm_flow:
                     delta_a /= (X_r**2.).mean()
                     
-                
+            y_prev[:] = y                
             
             delta_b = (y - self.y_mean_target)
 
@@ -391,7 +391,7 @@ class RNN():
                 T = self.N*50
 
         T_rec = int(T/T_skip_rec)
-
+        
         #### Recorders
         y_rec = np.ndarray((T_rec,self.N))
         X_r_rec = np.ndarray((T_rec,self.N))

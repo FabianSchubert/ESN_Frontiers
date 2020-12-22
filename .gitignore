@@ -119,6 +119,7 @@ dmypy.json
 
 # Numpy Data Files
 *.npy
+*.npz
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
