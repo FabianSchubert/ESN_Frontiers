@@ -234,7 +234,8 @@ class RNN():
                     T=None,
                     adapt_mode="local",
                     norm_flow=True,
-                    show_progress=True):
+                    show_progress=True,
+                    y_init=None):
                     
         if(not(adapt_rule in ("variance","flow"))):
             print("Error: adapt_rule must be either 'variance' or 'flow'.")
@@ -290,8 +291,12 @@ class RNN():
             X_e = self.w_in @ u_in[0,:]
         else:
             X_e = np.random.normal(0.,sigm_e,(self.N))
-
-        y = self.f(self.a_r * X_r + X_e - self.b)
+        
+        if y_init is None:
+            y = self.f(self.a_r * X_r + X_e - self.b)
+        else:
+            y = y_init
+        
         y_prev[:] = y
         y_mean[:] = 0.
         y_var[:] = 0.25

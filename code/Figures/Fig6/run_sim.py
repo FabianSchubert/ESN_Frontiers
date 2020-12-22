@@ -42,7 +42,8 @@ for n in tqdm(range(n_samples)):
             corr = np.corrcoef(y.T)
             
             C[n,k,l] = (np.abs(corr).sum() - rnn.N)/(rnn.N*(rnn.N - 1.))
-            
+
+os.makedirs(os.path.dirname(__file__)+"/data/", exist_ok = True)             
 np.savez(os.path.dirname(__file__)+"/data/sim_data_binary.npz",
         C=C,
         sigma_ext = sigma_ext_list,

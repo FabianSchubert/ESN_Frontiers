@@ -110,6 +110,7 @@ for input_type in tqdm(input_types):
 
 ################################
 
+os.makedirs(os.path.dirname(__file__)+"/data/", exist_ok = True) 
 np.savez(os.path.dirname(__file__)+"/data/sim_data.npz",
         MAE=MAE_list,
         N = N_list)

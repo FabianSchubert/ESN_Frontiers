@@ -55,6 +55,7 @@ for n in tqdm(range(n_samples)):
             R_a_est_end[n,k,l] = R_a_est[-1]
             R_t_arr[n,k,l] = R_t_list[k]     
 
+os.makedirs(os.path.dirname(__file__)+"/data/", exist_ok = True) 
 np.savez(os.path.dirname(__file__)+"/data/sim_data_no_renorm.npz",
         T_conv=T_conv,
         R_a_est = R_a_est_end,

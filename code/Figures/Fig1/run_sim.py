@@ -16,6 +16,8 @@ y, X_r, X_e, a_r, b, y_mean, y_std = rnn.run_hom_adapt("flow",
                                         T_skip_rec=T_skip,
                                         sigm_e = np.abs(np.random.normal(0.,sigm_e,(rnn.N))))
 
+os.makedirs(os.path.dirname(__file__)+"/data/", exist_ok = True) 
+
 np.savez(os.path.dirname(__file__)+"/data/sim_data.npz",
         W=rnn.W,
         a=a_r,

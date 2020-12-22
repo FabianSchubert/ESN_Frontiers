@@ -65,7 +65,7 @@ for k in tqdm(range(n_sweep_sigm_e)):
             
             MC[k,l,tau] = np.corrcoef(u_out_test,u_out_pred)[1,0]**2.
             
-
+os.makedirs(os.path.dirname(__file__)+"/data/", exist_ok = True) 
 np.savez(os.path.dirname(__file__)+"/data/sim_data_binary.npz",
         R=R,
         MC=MC,
