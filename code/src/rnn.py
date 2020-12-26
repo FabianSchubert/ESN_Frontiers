@@ -448,3 +448,7 @@ class RNN():
 
 
         return y_rec, X_r_rec, X_e_rec
+    
+    def get_R_a(self):
+        
+        return np.abs(np.linalg.eigvals(self.a_r * self.W.T)).max()
