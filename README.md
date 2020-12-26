@@ -17,9 +17,9 @@ Code for all figures can be found in the folder Figures.
 Note that the respective run_sim.py and plot.py scripts should
 be called from the code base folder using 
 
-"python3 -m Figures.<figure name>.run_sim" or
+"python3 -m Figures.\<figure name\>.run_sim" or
 
-"python3 -m Figures.<figure name>.plot".
+"python3 -m Figures.\<figure name\>.plot".
 
 Note that some simulations take a long to run.
 
