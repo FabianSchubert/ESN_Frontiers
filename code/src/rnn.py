@@ -327,22 +327,40 @@ class RNN():
 
     def run_hom_adapt_var_fix(self,u_in=None,sigm_e=1.,T_skip_rec = 1,T=None,show_progress=True):
         """
-        This function does linear least squares regression using the
-        neural activities acquired from running the network
-        with an input sequence u_in, and an output target 
-        sequence u_target. Thikonov regularization is used.
+        Runs homeostatic adaptation on a_r and b using homeostatic
+        targets y_mean_target and y_std_target. 
+        Local variables a_r_i and b_i are updated according to
+            
+            a_r_i(t+1) = a_r_i(t) + eps_a_r * (y_std_target^2 - (y(t)-y_av(t))^2)
+            b_i(t+1) = b_i(t) + eps_b * (y_mean_target - y(t))
+            
+        where y_av(t) is a running average of y(t).
+        
+        There are two options for the type of external input used 
+        during adaptation:
+        
+            1.  An input sequence u_in is passed, which
+                is projected onto the network using 
+                w_in for each time step. The run time 
+                of the simulation is determined by 
+                the length of the input sequence.
+            2.  The optional parameters T and sigm_e are
+                passed instead. Then, each node receives
+                independent random Gaussian external input
+                with zero mean and a standard deviation of
+                sigm_e (can either be a scalar or an 
+                array of size N). The run time is then 
+                given by the parameter T.  
         
         Optional parameters:
-            reg_fact : float, default = 0.01
-                Set the regularization factor
-                of the linear regression.
-            show_progress : bool, default = False
+            T_skip_rec : int, default = 1
+                Temporal step size for recording
+                state variables of the system.
+                Reduces memory usage when running very
+                long simulations. 
+            show_progress : bool, default = True
                 Specifies whether to show a progress
-                bar when running the network simulation.
-            T_prerun : int, default = 0
-                Optionally, the first T_prerun time
-                steps can be omitted for the linear
-                regression.            
+                bar when running the network simulation.           
         """        
         
         if u_in is not None:
@@ -444,7 +462,37 @@ class RNN():
                     norm_flow=True,
                     show_progress=True,
                     y_init=None):
-                    
+        """
+        Runs homeostatic adaptation on a_r and b using flow
+        control (pass "flow" via the adapt_rule parameter) or variance
+        control (pass "variance").
+        
+        There are two options for the type of external input used 
+        during adaptation:
+        
+            1.  An input sequence u_in is passed, which
+                is projected onto the network using 
+                w_in for each time step. The run time 
+                of the simulation is determined by 
+                the length of the input sequence.
+            2.  The optional parameters T and sigm_e are
+                passed instead. Then, each node receives
+                independent random Gaussian external input
+                with zero mean and a standard deviation of
+                sigm_e (can either be a scalar or an 
+                array of size N). The run time is then 
+                given by the parameter T.  
+        
+        Optional parameters:
+            T_skip_rec : int, default = 1
+                Temporal step size for recording
+                state variables of the system.
+                Reduces memory usage when running very
+                long simulations. 
+            show_progress : bool, default = True
+                Specifies whether to show a progress
+                bar when running the network simulation.           
+        """            
         if(not(adapt_rule in ("variance","flow"))):
             print("Error: adapt_rule must be either 'variance' or 'flow'.")
             return False
@@ -593,7 +641,44 @@ class RNN():
 
 
     def run_sample(self,u_in=None,sigm_e=1.,X_r_init=None,T_skip_rec = 1,T=None,show_progress=True):
-
+        """
+        Runs a sample simulation without adaptation and returns
+        the recorded neural activity y, the recurrent contribution
+        to the membrane potential X_r and the external
+        contribution to the membrane potential X_e.
+        
+        There are two options for the type of external input used 
+        during adaptation:
+        
+            1.  An input sequence u_in is passed, which
+                is projected onto the network using 
+                w_in for each time step. The run time 
+                of the simulation is determined by 
+                the length of the input sequence.
+            2.  The optional parameters T and sigm_e are
+                passed instead. Then, each node receives
+                independent random Gaussian external input
+                with zero mean and a standard deviation of
+                sigm_e (can either be a scalar or an 
+                array of size N). The run time is then 
+                given by the parameter T.  
+        
+        Optional parameters:
+            X_r_init : numpy float array of size (N)
+                Allows setting the initial recurrent input
+                to a certain set of values. If not specified,
+                X_r is randomly initialized.
+            T_skip_rec : int, default = 1
+                Temporal step size for recording
+                state variables of the system.
+                Reduces memory usage when running very
+                long simulations. 
+            show_progress : bool, default = True
+                Specifies whether to show a progress
+                bar when running the network simulation.           
+        """ 
+        
+        
         if u_in is not None:
             mode = 'real_input'
             u_in = self.check_data_in_comp(u_in)
@@ -658,5 +743,8 @@ class RNN():
         return y_rec, X_r_rec, X_e_rec
     
     def get_R_a(self):
-        
+        """
+        Returns the spectral radius of the effective
+        recurrent weight matrix a_r_i * W_ij.          
+        """ 
         return np.abs(np.linalg.eigvals(self.a_r * self.W.T)).max()
