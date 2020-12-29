@@ -7,11 +7,21 @@ radius of echo states.
 
 ## Usage
 
+The following python packages need to installed:
+
+  - NumPy
+  - Matplotlib
+  - Seaborn
+  - tqdm
+
 The network class RNN can be found in the src.rnn module.
 after initialization, the function run_hom_adapt() starts
 a simulation run with homeostatic adaptation, either using
 flow control (passing "flow" to the function) or variance
 control (passing "variance" to the function).
+
+For further details, please check the <a href="rnn.doc.html">Documentation
+of the RNN class</a>.
 
 Code for all figures can be found in the folder Figures.
 Note that the respective run_sim.py and plot.py scripts should
