@@ -32,7 +32,7 @@ be called from the code base folder using
 
 "python3 -m Figures.\<figure name\>.plot".
 
-Note that some simulations take a long to run.
+Note that some simulations may take a long to run.
 
 
 
