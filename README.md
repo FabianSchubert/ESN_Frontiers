@@ -15,7 +15,7 @@ The following python packages need to installed:
   - tqdm
 
 The network class RNN can be found in the src.rnn module.
-after initialization, the function run_hom_adapt() starts
+After initialization, the function run_hom_adapt() starts
 a simulation run with homeostatic adaptation, either using
 flow control (passing "flow" to the function) or variance
 control (passing "variance" to the function).
@@ -32,7 +32,7 @@ in the same folder.
 Note that the respective run_sim.py and plot.py scripts should
 be called from the code base folder using 
 
-"python3 -m Figures.\<figure name\>.run_sim" or
+"python3 -m Figures.\<figure name\>.run_sim" and 
 
 "python3 -m Figures.\<figure name\>.plot".
 
