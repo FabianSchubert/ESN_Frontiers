@@ -24,8 +24,8 @@ parser.add_argument("--hide_plot",action='store_true')
 
 args = parser.parse_args()
 
-import plotting_new.r_a as r_a
-import plotting_new.specrad as specrad
+import plotting.r_a as r_a
+import plotting.specrad as specrad
 
 fig = plt.figure(figsize=(TEXT_WIDTH,TEXT_WIDTH*0.5))
 

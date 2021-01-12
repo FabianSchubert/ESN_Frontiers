@@ -7,7 +7,7 @@ import seaborn as sns
 sns.set()
 mpl.style.use('matplotlibrc')
 
-import plotting_new.r_a as r_a
+import plotting.r_a as r_a
 
 #from matplotlib.lines import Line2D
 
@@ -46,9 +46,9 @@ fig, ax = plt.subplots(2,2,figsize=(TEXT_WIDTH,TEXT_WIDTH))
 for k in range(2):
     for l in range(2):
         m = k*2 + l
-        
+
         r_a.plot(ax[k,l],os.path.dirname(__file__)+"/data/"+files[m],col=colors[0],skip_steps=15)
-        
+
 fig.tight_layout(pad=0.1,h_pad=0.1,w_pad=0.3)
 
 for k in range(2):
@@ -59,16 +59,13 @@ for k in range(2):
         +str(ax[k,l].get_window_extent().transformed(fig.dpi_scale_trans.inverted()).width)+
         'in]{ {\\bf '+['A','B','C','D'][m]+'} \\hfill \\normalfont '
         +input_types[m] +'}')
-        
+
         ax[k,l].set_title(ax_title,loc='left',usetex=True)
 
 fig.tight_layout(pad=0.1,h_pad=0.1,w_pad=0.3)
-        
+
 fig.savefig(os.path.dirname(__file__)+'/FigS4.pdf')
 fig.savefig(os.path.dirname(__file__)+'/FigS4.png',dpi=1000)
 
 if not(args.hide_plot):
    plt.show()
-        
-        
-    

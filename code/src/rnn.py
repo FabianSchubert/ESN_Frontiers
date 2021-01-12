@@ -711,7 +711,7 @@ class RNN():
         else:
             X_e = np.random.normal(0.,sigm_e,(self.N))
 
-        y = self.f(self.a_r * X_r + X_e - self.b)
+        y = self.f(X_r + X_e - self.b)
 
         #### Assign for t=0
         y_rec[0,:] = y
@@ -721,13 +721,13 @@ class RNN():
 
         for t in tqdm(range(1,T),disable=not(show_progress)):
 
-            X_r = self.W @ y
+            X_r = self.a_r * (self.W @ y)
             if mode == 'real_input':
                 X_e = self.w_in @ u_in[t,:]
             else:
                 X_e = np.random.normal(0.,sigm_e,(self.N))
 
-            y = self.f(self.a_r * X_r + X_e - self.b)
+            y = self.f( X_r + X_e - self.b)
 
 
             #### record
