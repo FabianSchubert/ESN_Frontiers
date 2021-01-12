@@ -25,6 +25,10 @@ For further details, please check the
 Documentation of the RNN class</a>.
 
 Code for all figures can be found in the folder Figures.
+Each folder contains a run_sim.py file that has to be run first,
+generating the data for the respective figure. 
+The plot is then generated using plot.py 
+in the same folder.
 Note that the respective run_sim.py and plot.py scripts should
 be called from the code base folder using 
 
@@ -32,7 +36,7 @@ be called from the code base folder using
 
 "python3 -m Figures.\<figure name\>.plot".
 
-Note that some simulations may take a long to run.
+Note that some simulations may take a long time to run.
 
 
 
